@@ -12,6 +12,7 @@ tekore = "*"
 flask = "*"
 flask-sqlalchemy = "*"
 python-dotenv = "*"
+gunicorn = "*"
 
 [requires]
 python_version = "3.8"
