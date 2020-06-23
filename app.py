@@ -31,26 +31,35 @@ def songs():
 @app.route('/prediction', methods=['POST'])
 def predict():
     '''
-    Receives input data, gets track features feeds it to model, converts to .json object and returns it
+    Receives input data, gets track features/analysis (feeds it to model), converts to .json object and returns it
     '''
     # Receive JSON of song id's
     song_inp_json = request.json
-    song_inp = song_inp_json['recommended_song_id_list']
-    #print(song_inp)
+    song_inp = song_inp_json['song_id_list']
+    song_count = song_inp_json['recommendation_count']
+    print(song_inp)
 
     # Print song titles based on track id's
     features = []
     analyses = []
-    for song_id in song_inp:
-        features.append(spotify.track_audio_features(song_id))
-        analyses.append(spotify.track_audio_analysis(song_id))
+    # for song_id in song_inp:
+    #     features.append(spotify.track_audio_features(song_id))
+    #     analyses.append(spotify.track_audio_analysis(song_id))
     
-    #print song info received
-    print(str(features))
-    print('\n--------\n')
-    print(str(analyses))
+    # #print song info received
+    # print(str(features))
+    # print('\n--------\n')
+    # print(str(analyses))
 
-    return 'Received!'
+    # pretend we have song recommendations
+    song_out = ["2NRANZE9UCmPNIHJHJO54",
+                "2NRANZE9UCmPNIJJKLK12",
+                "2NRANZE9UCmOIUJMNWQ20",
+                "2NRANZE9UCmPSNAKSAN44",
+    ]
+    song_out_json = {"recommended_song_id_list": song_out}
+
+    return song_out_json
 
 
 if __name__=='__main__':
