@@ -1,6 +1,6 @@
 # Data-Engineers
 ## Contains the Flask app that serves model predictions based on song id inputs
-URL for this endpoint: [whispering-refuge-19940.herokuapp.com](whispering-refuge-19940.herokuapp.com)
+URL for this endpoint: [https://whispering-refuge-19940.herokuapp.com](https://whispering-refuge-19940.herokuapp.com)
 ### `.../predictions`
 Feed this a POST request in the shape of json, it's looking for 2 fields:
  - `song_id_list:` an array of song id's as strings
