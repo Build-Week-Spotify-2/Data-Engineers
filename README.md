@@ -11,4 +11,4 @@ It will return json data with only the field `recommended_song_id_list:` followe
 ---
 
 ### `/songs`
-Searches with the query "5 best songs" and displays (you may be surprised by the results)  
+Searches with the query "5 best songs" and displays what are evidently Spotify's 5 best songs (you may be surprised by the results)  
