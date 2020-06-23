@@ -1,33 +1,31 @@
 from flask import Flask, request
 from flask_sqlalchemy import SQLAlchemy
 import tekore as tk
+from dotenv import load_dotenv
+import os
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 
-@app.route('/root')
+# initialize Spotify cursor
+load_dotenv()
+CLIENT_ID = os.getenv('CLIENT_ID')
+CLIENT_SECRET = os.getenv('CLIENT_SECRET')
+cred = tk.Credentials(CLIENT_ID,CLIENT_SECRET)
+access_token = cred.request_client_token()
+spotify = tk.Spotify(access_token)
+
+@app.route('/')
 def root():
-    #import Spotify API
-    #api = SPOTIFY.TODO()
-    #first,second = SPOTIFY.TODO()
-    #return either first or second
-    pass
+    return "You don't want to look at this page"
 
-@app.route('/index')
-def index():
-    #import Spotify API
-    #api = SPOTIFY.TODO()
-    #first, second = api.measurements(one_attribute= ?, second_attribute= ?)
-    #return first or second
-    pass
-
-@app.route('/refresh')
-def refresh():
-    #import SPOTIFY API
-    #api = SPOTIFY.TODO()
-    DB.drop_all()
-    DB.create_all()
-    return 'Data refreshed!'
+@app.route('/request')
+def request():
+    tracks, = spotify.search('5 best songs',types=('track',), limit=5)
+    result = ''
+    for track in tracks.items:
+        result = result + track.name + '\n'#' by ' + track.artists.name + 
+    return result
 
 if __name__=='__main__':
     app.run(debug=True)
