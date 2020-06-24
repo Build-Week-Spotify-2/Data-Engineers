@@ -30,6 +30,8 @@ def songs():
         result = result + track.name + '\n'#' by ' + track.artists.name + 
     return result #Right now, will only return track names with no other information
 #Output: If You're Happy And You Know It I'm A Little Teapot There Was An Old Lady Who Swallowed A Fly The Teddy Bears Picnic Hokey Pokey
+#Error: 503
+#503 means that there is a malfunction in PHP not related to Apache or LiteSpeed.
 @app.route('/prediction', methods=['POST'])
 def predict():
     '''
