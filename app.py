@@ -69,7 +69,6 @@ def predict():
 
     return str(features)#song_out_json
 #Heroku displays "METHOD NOT ALLOWED" currently for /prediction
-class Tests(unittest.TestCase):
 @app.route('/testsongs')
     def testsongs():
         unittest.FunctionTestCase(songs())
