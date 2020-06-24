@@ -52,15 +52,20 @@ def predict():
     # print(str(analyses))
 
     # pretend we have song recommendations
-    song_out = ["2NRANZE9UCmPNIHJHJO54",
-                "2NRANZE9UCmPNIJJKLK12",
-                "2NRANZE9UCmOIUJMNWQ20",
-                "2NRANZE9UCmPSNAKSAN44",
+    song_out = ["7FGq80cy8juXBCD2nrqdWU",
+                "20hsdn8oITBsuWNLhzr5eh",
+                "7fPuWrlpwDcHm5aHCH5D9t",
+                "2BOqDYLOJBiMOXShCV1neZ",
+                "67O8CWXxPsfz8orZVGMQwf"
     ]
+    # Get song features
+    for song_id in song_out:
+        features.append(spotify.track_audio_features(song_id))
+    
+                
     song_out_json = {"recommended_song_id_list": song_out}
 
-    return song_out_json
-
+    return str(features)#song_out_json
 
 if __name__=='__main__':
     app.run(debug=True)
