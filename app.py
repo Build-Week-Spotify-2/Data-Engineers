@@ -71,9 +71,9 @@ def predict():
 #Heroku displays "METHOD NOT ALLOWED" currently for /prediction
 @app.route('/testsongs')
 def testsongs():
-    return unittest.FunctionTestCase(songs())
+    unittest.FunctionTestCase(songs())
 @app.route('/testpredict')
 def testpredict():
-    return unittest.FunctionTestCase(predict())
+    unittest.FunctionTestCase(predict())
 if __name__=='__main__':
     app.run(debug=True)
