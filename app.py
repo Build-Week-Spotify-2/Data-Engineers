@@ -69,13 +69,14 @@ def predict():
 
     return str(features)#song_out_json
 #Heroku displays "METHOD NOT ALLOWED" currently for /prediction
+class Tests(unittest.TestCase):
 @app.route('/testsongs')
-def testsongs():
-    unittest.FunctionTestCase(songs())
+    def testsongs():
+        unittest.FunctionTestCase(songs())
 #Error: "GET /testsongs HTTP/1.1" 500 290 
 @app.route('/testpredict')
-def testpredict():
-    unittest.FunctionTestCase(predict())
+    def testpredict():
+        unittest.FunctionTestCase(predict())
 # Error:"GET /testpredict HTTP/1.1" 500 290 
 #500: A catch-all error code that is affected by an internal conflict.
 #Will look into this.
