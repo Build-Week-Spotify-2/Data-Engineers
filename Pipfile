@@ -13,6 +13,8 @@ flask = "*"
 flask-sqlalchemy = "*"
 python-dotenv = "*"
 gunicorn = "*"
+pandas = "*"
+spotipy = "*"
 
 [requires]
 python_version = "3.8"
