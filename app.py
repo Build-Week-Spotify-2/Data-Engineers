@@ -4,9 +4,10 @@ import tekore as tk
 from dotenv import load_dotenv
 import os
 import pprint
-
+import unittest
 app=Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+#app.config is only to avoid an error
 
 # initialize Spotify cursor
 load_dotenv()
@@ -18,7 +19,8 @@ spotify = tk.Spotify(access_token)
 
 @app.route('/')
 def root():
-    return "You don't want to look at this page"
+    return "Try /songs or /prediction instead." 
+#NOT intended to be accessed
 
 @app.route('/songs')
 def songs():
@@ -26,8 +28,8 @@ def songs():
     result = ''
     for track in tracks.items:
         result = result + track.name + '\n'#' by ' + track.artists.name + 
-    return result
-
+    return result #Right now, will only return track names with no other information
+#Output: If You're Happy And You Know It I'm A Little Teapot There Was An Old Lady Who Swallowed A Fly The Teddy Bears Picnic Hokey Pokey
 @app.route('/prediction', methods=['POST'])
 def predict():
     '''
@@ -66,6 +68,12 @@ def predict():
     song_out_json = {"recommended_song_id_list": song_out}
 
     return str(features)#song_out_json
-
+#Heroku displays "METHOD NOT ALLOWED" currently for /prediction
+@app.route('/testsongs')
+def testsongs():
+    return unittest.FunctionTestCase(songs())
+@app.route('/testpredict')
+def testpredict():
+    return unittest.FunctionTestCase(predict())
 if __name__=='__main__':
     app.run(debug=True)
