@@ -4,9 +4,10 @@ import tekore as tk
 from dotenv import load_dotenv
 import os
 import pprint
-
+import unittest
 app=Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
+#app.config is only to avoid an error
 
 # initialize Spotify cursor
 load_dotenv()
@@ -18,7 +19,8 @@ spotify = tk.Spotify(access_token)
 
 @app.route('/')
 def root():
-    return "You don't want to look at this page"
+    return "Try /songs or /prediction instead." 
+#NOT intended to be accessed
 
 @app.route('/songs')
 def songs():
@@ -26,8 +28,10 @@ def songs():
     result = ''
     for track in tracks.items:
         result = result + track.name + '\n'#' by ' + track.artists.name + 
-    return result
-
+    return result #Right now, will only return track names with no other information
+#Output: If You're Happy And You Know It I'm A Little Teapot There Was An Old Lady Who Swallowed A Fly The Teddy Bears Picnic Hokey Pokey
+#Error: 503
+#503 means that there is a malfunction in PHP not related to Apache or LiteSpeed.
 @app.route('/prediction', methods=['POST'])
 def predict():
     '''
@@ -60,12 +64,22 @@ def predict():
     ]
     # Get song features
     for song_id in song_out:
-        features.append(spotify.track_audio_features(song_id))
+        features.append(spotify.track_audio_features(song_id))# Will display 5 songs
     
                 
     song_out_json = {"recommended_song_id_list": song_out}
 
     return str(features)#song_out_json
-
+#Heroku displays "METHOD NOT ALLOWED" currently for /prediction
+#@app.route('/testsongs')
+#    def testsongs():
+#        unittest.FunctionTestCase(songs())
+#Error: "GET /testsongs HTTP/1.1" 500 290 
+#@app.route('/testpredict')
+#    def testpredict():
+#        unittest.FunctionTestCase(predict())
+# Error:"GET /testpredict HTTP/1.1" 500 290 
+#500: A catch-all error code that is affected by an internal conflict.
+#Will look into this.
 if __name__=='__main__':
     app.run(debug=True)
