@@ -62,7 +62,7 @@ def predict():
     ]
     # Get song features
     for song_id in song_out:
-        features.append(spotify.track_audio_features(song_id))
+        features.append(spotify.track_audio_features(song_id))# Will display 5 songs
     
                 
     song_out_json = {"recommended_song_id_list": song_out}
@@ -72,8 +72,12 @@ def predict():
 @app.route('/testsongs')
 def testsongs():
     unittest.FunctionTestCase(songs())
+#Error: "GET /testsongs HTTP/1.1" 500 290 
 @app.route('/testpredict')
 def testpredict():
     unittest.FunctionTestCase(predict())
+# Error:"GET /testpredict HTTP/1.1" 500 290 
+#500: A catch-all error code that is affected by an internal conflict.
+#Will look into this.
 if __name__=='__main__':
     app.run(debug=True)
