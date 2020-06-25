@@ -4,6 +4,8 @@ import tekore as tk
 from dotenv import load_dotenv
 import os
 import pprint
+from Predictor import predictor
+
 app=Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 #app.config is only to avoid an error
@@ -38,8 +40,9 @@ def songs():
         correct = {'Results_gathered':result}
     else:
         return "Not a valid input!" #Right now, will only return track names with no other information
+
 @app.route('/prediction', methods=['POST'])
-def predict():
+def prediction():
     '''
     Receives input data, gets track features/analysis (feeds it to model), converts to .json object and returns it
     '''
@@ -47,7 +50,7 @@ def predict():
     song_inp_json = request.json
     song_inp = song_inp_json['song_id_list']
     song_count = song_inp_json['recommendation_count']
-    print(song_inp)
+
     # Print song titles based on track id's
     features = []
     analyses = []
@@ -62,21 +65,22 @@ def predict():
 
     # pretend we have song recommendations
 
-    song_out = ["7FGq80cy8juXBCD2nrqdWU",
-                "20hsdn8oITBsuWNLhzr5eh",
-                "7fPuWrlpwDcHm5aHCH5D9t",
-                "2BOqDYLOJBiMOXShCV1neZ",
-                "67O8CWXxPsfz8orZVGMQwf"
-    ]
+    # song_out = ["7FGq80cy8juXBCD2nrqdWU",
+    #             "20hsdn8oITBsuWNLhzr5eh",
+    #             "7fPuWrlpwDcHm5aHCH5D9t",
+    #             "2BOqDYLOJBiMOXShCV1neZ",
+    #             "67O8CWXxPsfz8orZVGMQwf"
+    # ]
+    song_out_json = predictor.predict(song_inp,4)
+
     # Get song features
-    for song_id in song_out:
-        features.append(spotify.track_audio_features(song_id))# Will display 5 songs
+    # for song_id in song_out:
+    #     features.append(spotify.track_audio_features(song_id))# Will display 5 songs
     
-    if validate_post_data(data_object=song_out):
-        song_out_json = {"recommended_song_id_list": song_out}
-    else:
-        return "Please check fields and try again"
-    return str(features)#song_out_json
-#Heroku displays "METHOD NOT ALLOWED" currently for /prediction
+                
+    # song_out_json = {"recommended_song_id_list": song_out}
+
+    return song_out_json
+
 if __name__=='__main__':
     app.run(debug=True)

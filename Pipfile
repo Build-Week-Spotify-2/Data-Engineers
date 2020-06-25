@@ -6,13 +6,16 @@ verify_ssl = true
 [dev-packages]
 
 [packages]
-heroku = "*"
 postgres = "*"
 tekore = "*"
 flask = "*"
 flask-sqlalchemy = "*"
-python-dotenv = "*"
 gunicorn = "*"
+pandas = "0.9"
+spotipy = "*"
+python-dateutil = "==2.8.1"
+python-dotenv = "*"
+scikit-learn = "==0.22.2.post1"
 
 [requires]
 python_version = "3.8"
