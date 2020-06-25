@@ -3,12 +3,13 @@ from flask_sqlalchemy import SQLAlchemy
 import tekore as tk
 from dotenv import load_dotenv
 import os
-import pprint
 from Predictor import predictor
 
 app=Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 #app.config is only to avoid an error
+app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite.db'
+db = SQLAlchemy(app)
 
 # initialize Spotify cursor
 load_dotenv()
