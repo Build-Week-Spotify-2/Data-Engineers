@@ -1,7 +1,6 @@
 from Predictor.methods import methods
 from pdb import set_trace as st
 import pandas as pd
-from flask import jsonify
 
 
 def predict(song_id_list, recommendation_count):
@@ -30,8 +29,9 @@ def predict(song_id_list, recommendation_count):
     output_df["song_id"] = similar_song_id_list
     output_df =\
         methods.add_artist_name_song_name_album_image(output_df, spotipy_obj)
-    output_df_json = jsonify(output_df.to_dict(orient='records'))
-    return output_df_json
+    return output_df
+    # output_df_json = jsonify(output_df.to_dict(orient='records'))
+    # return output_df_json
 
 
 if __name__ == "__main__":

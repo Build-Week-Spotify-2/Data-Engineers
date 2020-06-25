@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import os
 from Predictor import predictor
 from Searcher import searcher
+from flask import jsonify
+
 
 app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
@@ -79,15 +81,16 @@ def prediction():
     #             "2BOqDYLOJBiMOXShCV1neZ",
     #             "67O8CWXxPsfz8orZVGMQwf"
     # ]
-    song_out_json = predictor.predict(song_inp, song_count)
-
+    song_out_df = predictor.predict(song_inp, song_count)
+    
     # Get song features
     # for song_id in song_out:
     #     features.append(spotify.track_audio_features(song_id))# Will display 5 songs
-    
-                
-    # song_out_json = {"recommended_song_id_list": song_out}
-    return song_out_json
+                 
+    song_out_dict = song_out_df.to_dict(orient='records')
+    song_out_dict = {"recommended_song_id_list": song_out_dict}
+    output_df_json = jsonify(song_out_dict)
+    return output_df_json
 
 
 @app.route('/search', methods=['POST'])
