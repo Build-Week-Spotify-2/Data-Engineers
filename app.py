@@ -28,7 +28,7 @@ class Users(db.Model):
         return '<User %r>' % self.username
 
 class Songs(db.Model):
-    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
+    user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False, primary_key=True)
     song_id = db.Column(db.Integer, nullable=False)
 
     def __repr__(self):
@@ -93,28 +93,31 @@ def prediction():
 
     return song_out_json
 
-@app.route('/add-user', methods='POST')
+@app.route('/add-user', methods=['POST'])
 def add_user():
     '''Receives new user JSON with fields: username, email'''
     inp_json = request.json
     username = inp_json['username']
     email = inp_json['email']
+    if username and email == str:
+        db.session.add(Users(username=username, email=email))
+        db.session.commit()
+        return 'Received!'
+    else:
+        return 'Please check inputs!'
 
-    db.session.add(Users(username=username, email=email))
-    db.session.commit()
-    return 'Received!'
-
-@app.route('/add-song-like', methods='POST')
+@app.route('/add-song-like', methods=['POST'])
 def add_song_like():
     '''Adds a new liked song with a JSON input containing fields: user_id, song_id'''
     inp_json = request.json
     user_id = inp_json['user_id']
     song_id = inp_json['song_id']
-
-    db.session.add(Songs(user_id=user_id, song_id=song_id))
-    db.session.commit()
-    return 'Received!'
-
+    if len(song_id) == 22:
+        db.session.add(Songs(user_id=user_id, song_id=song_id))
+        db.session.commit()
+        return 'Received!'
+    else:
+        return 'Song ID incorrect!'
 
 def validate_post_data(data_object):
     '''This function will be to validate everything is functioning properly
