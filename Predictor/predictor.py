@@ -31,7 +31,6 @@ def predict(song_id_list, recommendation_count):
     output_df =\
         methods.add_artist_name_song_name(output_df, spotipy_obj)
     output_df_json = jsonify(output_df.to_dict(orient='records'))
-
     return output_df_json
 
 

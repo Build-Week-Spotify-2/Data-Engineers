@@ -4,8 +4,9 @@ import tekore as tk
 from dotenv import load_dotenv
 import os
 from Predictor import predictor
+from Searcher import searcher
 
-app=Flask(__name__)
+app = Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 #app.config is only to avoid an error
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///sqlite.db'
@@ -18,6 +19,8 @@ CLIENT_SECRET = os.getenv('CLIENT_SECRET')
 cred = tk.Credentials(CLIENT_ID,CLIENT_SECRET)
 access_token = cred.request_client_token()
 spotify = tk.Spotify(access_token)
+
+
 def validate_post_data(data_object):
     if ('Results_gathered' in data_object or "recommended_song_id_list" in data_object):
         return True
@@ -25,22 +28,26 @@ def validate_post_data(data_object):
         return False
 #This function will be to validate everything is functioning properly
 #and will also specify that a user's inputs are wrong.
+
+
 @app.route('/')
 def root():
     return "Try /songs or /prediction instead." 
 #NOT intended to be accessed
 
+
 @app.route('/songs')
 def songs():
-    tracks, = spotify.search('5 best songs',types=('track',), limit=5)
+    tracks, = spotify.search('5 best songs', types=('track',), limit=5)
     result = ''
     for track in tracks.items:
         result = result + track.name  + '\n'#' by ' + track.artists.name + 
     return result
-    if validate_post_data(data_object=result):
-        correct = {'Results_gathered':result}
+    if validate_post_data(data_object = result):
+        correct = {'Results_gathered': result}
     else:
         return "Not a valid input!" #Right now, will only return track names with no other information
+
 
 @app.route('/prediction', methods=['POST'])
 def prediction():
@@ -80,8 +87,24 @@ def prediction():
     
                 
     # song_out_json = {"recommended_song_id_list": song_out}
-
     return song_out_json
+
+
+@app.route('/search', methods=['POST'])
+def search():
+    '''
+    Receives a query and searches for it.
+    JSON parameters:
+        "query": <string> search query,
+        "limit": <int> maximum amout of song to return
+    '''
+
+    song_inp_json = request.json
+    query = song_inp_json['query']
+    limit = song_inp_json['limit']
+
+    results = searcher(query, limit)
+
 
 if __name__=='__main__':
     app.run(debug=True)
