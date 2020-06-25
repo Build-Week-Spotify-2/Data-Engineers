@@ -61,15 +61,13 @@ def predict():
     # print(str(analyses))
 
     # pretend we have song recommendations
-    if validate_post_data(data_object=song_inp_json):
-        song_out = ["7FGq80cy8juXBCD2nrqdWU",
+
+    song_out = ["7FGq80cy8juXBCD2nrqdWU",
                 "20hsdn8oITBsuWNLhzr5eh",
                 "7fPuWrlpwDcHm5aHCH5D9t",
                 "2BOqDYLOJBiMOXShCV1neZ",
                 "67O8CWXxPsfz8orZVGMQwf"
-        ]
-    else:
-        return "Please check fields and try again"
+    ]
     # Get song features
     for song_id in song_out:
         features.append(spotify.track_audio_features(song_id))# Will display 5 songs
