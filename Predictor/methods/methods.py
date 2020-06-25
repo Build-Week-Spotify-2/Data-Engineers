@@ -2,6 +2,11 @@ from dotenv import load_dotenv
 import os
 import pandas as pd
 from pdb import set_trace as st
+import spotipy
+import spotipy.util as util
+import sys
+import pickle
+import sklearn
 
 def get_spotify_token():
     '''
@@ -9,16 +14,12 @@ def get_spotify_token():
     return: spotipy object
     '''
 
-    import spotipy
-    import spotipy.util as util
-    import sys
-
+    
     load_dotenv("../.env")
     SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
     SPOTIPY_CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
     SPOTIPY_REDIRECT_URI = os.getenv("SPOTIPY_REDIRECT_URI")
     USERNAME = os.getenv("USERNAME")
-    breakpoint()
 
     token = util.prompt_for_user_token(
         username=USERNAME,
@@ -32,17 +33,16 @@ def get_spotify_token():
 
 
 def load_model():
-    import pickle
-    import sklearn
+    #import sklearn
 
-    dbfile = open('models/kmeans.pickl', 'rb')
+    dbfile = open('Predictor/models/kmeans.pickl', 'rb')
     model = pickle.load(dbfile)
     dbfile.close()
     return model
 
 
 def load_labled_spotify_songs():
-    return pd.read_csv("data/labled_songs_id.csv")
+    return pd.read_csv("Predictor/data/labled_songs_id.csv")
 
 
 def get_songs_audio_features(song_id_list, spotipy_obj):
