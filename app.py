@@ -72,7 +72,7 @@ def prediction():
     #             "2BOqDYLOJBiMOXShCV1neZ",
     #             "67O8CWXxPsfz8orZVGMQwf"
     # ]
-    song_out_json = predictor.predict(song_inp,4)
+    song_out_json = predictor.predict(song_inp, song_count)
 
     # Get song features
     # for song_id in song_out:

@@ -86,3 +86,15 @@ def get_n_similar_songs(song_label, labled_songs, n, spotipy_obj):
         
     list_of_recommended_songs = same_cluster_songs.head(n).to_list()
     return list_of_recommended_songs
+
+
+def add_artist_name_song_name(output_df, spotipy_obj):
+    tracks = spotipy_obj.tracks(output_df["song_id"].to_list())
+    list_of_tracks = tracks["tracks"]
+    list_of_tracks_df = pd.DataFrame(list_of_tracks)
+    
+    output_df["artists"] = \
+        list_of_tracks_df["artists"].apply(lambda x: [artist_dict["name"] for artist_dict in x])
+    output_df["song_name"] = list_of_tracks_df["name"]
+    
+    return output_df
