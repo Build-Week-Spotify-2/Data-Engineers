@@ -5,6 +5,8 @@ from dotenv import load_dotenv
 import os
 import pprint
 import unittest
+from Predictor import predictor
+
 app=Flask(__name__)
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS']= False
 #app.config is only to avoid an error
@@ -32,8 +34,9 @@ def songs():
 #Output: If You're Happy And You Know It I'm A Little Teapot There Was An Old Lady Who Swallowed A Fly The Teddy Bears Picnic Hokey Pokey
 #Error: 503
 #503 means that there is a malfunction in PHP not related to Apache or LiteSpeed.
+
 @app.route('/prediction', methods=['POST'])
-def predict():
+def prediction():
     '''
     Receives input data, gets track features/analysis (feeds it to model), converts to .json object and returns it
     '''
@@ -56,12 +59,13 @@ def predict():
     # print(str(analyses))
 
     # pretend we have song recommendations
-    song_out = ["7FGq80cy8juXBCD2nrqdWU",
-                "20hsdn8oITBsuWNLhzr5eh",
-                "7fPuWrlpwDcHm5aHCH5D9t",
-                "2BOqDYLOJBiMOXShCV1neZ",
-                "67O8CWXxPsfz8orZVGMQwf"
-    ]
+    # song_out = ["7FGq80cy8juXBCD2nrqdWU",
+    #             "20hsdn8oITBsuWNLhzr5eh",
+    #             "7fPuWrlpwDcHm5aHCH5D9t",
+    #             "2BOqDYLOJBiMOXShCV1neZ",
+    #             "67O8CWXxPsfz8orZVGMQwf"
+    # ]
+    song_out = predictor.predict(song_inp,4)
     # Get song features
     for song_id in song_out:
         features.append(spotify.track_audio_features(song_id))# Will display 5 songs
@@ -69,7 +73,7 @@ def predict():
                 
     song_out_json = {"recommended_song_id_list": song_out}
 
-    return str(features)#song_out_json
+    return song_out_json
 #Heroku displays "METHOD NOT ALLOWED" currently for /prediction
 #@app.route('/testsongs')
 #    def testsongs():
