@@ -29,7 +29,7 @@ def predict(song_id_list, recommendation_count):
     output_df = methods.get_songs_audio_features(similar_song_id_list, spotipy_obj)   
     output_df["song_id"] = similar_song_id_list
     output_df =\
-        methods.add_artist_name_song_name(output_df, spotipy_obj)
+        methods.add_artist_name_song_name_album_image(output_df, spotipy_obj)
     output_df_json = jsonify(output_df.to_dict(orient='records'))
     return output_df_json
 

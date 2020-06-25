@@ -103,7 +103,9 @@ def search():
     query = song_inp_json['query']
     limit = song_inp_json['limit']
 
-    results = searcher(query, limit)
+    results = searcher.search(query, limit)
+    # breakpoint()
+    return results
 
 
 if __name__=='__main__':

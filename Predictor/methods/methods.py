@@ -8,13 +8,13 @@ import sys
 import pickle
 import sklearn
 
+
 def get_spotify_token():
     '''
     This function will initiate the spotify token
     return: spotipy object
     '''
 
-    
     load_dotenv("../.env")
     SPOTIPY_CLIENT_ID = os.getenv("SPOTIPY_CLIENT_ID")
     SPOTIPY_CLIENT_SECRET = os.getenv("SPOTIPY_CLIENT_SECRET")
@@ -75,7 +75,7 @@ def get_n_similar_songs(song_label, labled_songs, n, spotipy_obj):
         labled_songs: the dataframe that has all the
             songs' cluster lables
         n: number of required recommendations
-    
+
     return:
         list of recommended song ids
     '''
@@ -83,18 +83,24 @@ def get_n_similar_songs(song_label, labled_songs, n, spotipy_obj):
     same_cluster_songs = \
         labled_songs[labled_songs["label"] == song_label]\
         .loc[:, "track_id"]
-        
+
     list_of_recommended_songs = same_cluster_songs.head(n).to_list()
     return list_of_recommended_songs
 
 
-def add_artist_name_song_name(output_df, spotipy_obj):
+def add_artist_name_song_name_album_image(output_df, spotipy_obj):
     tracks = spotipy_obj.tracks(output_df["song_id"].to_list())
     list_of_tracks = tracks["tracks"]
     list_of_tracks_df = pd.DataFrame(list_of_tracks)
-    
+
+    # atrists:
     output_df["artists"] = \
         list_of_tracks_df["artists"].apply(lambda x: [artist_dict["name"] for artist_dict in x])
+
+    # song_name:
     output_df["song_name"] = list_of_tracks_df["name"]
-    
+
+    # album_image:
+    output_df["album_image"] = list_of_tracks_df["album"].apply(lambda x: x["images"][0]["url"])
+
     return output_df
